@@ -7,6 +7,7 @@ using Org.BouncyCastle.Crypto.Signers;
 using Org.BouncyCastle.Math;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities.Encoders;
+using ChaumianBlinding.Crypto;
 using System;
 
 namespace ChaumianBlinding
@@ -50,6 +51,7 @@ namespace ChaumianBlinding
 
         static void Main(string[] args)
         {
+            Blinding.CanVerifyBlind();
             // Create a "protocoin" using the bank's public key. The protocoin
             // contains an internal blinding factor that is used to blind the
             // message to be signed by the bank.
@@ -249,27 +251,5 @@ namespace ChaumianBlinding
 
             return new Coin(coinID, s);
         }
-    }
-
-    class Util
-    {
-        public static byte[] GetRandomBytes(int count)
-        {
-            byte[] bytes = new byte[count];
-            new SecureRandom().NextBytes(bytes);
-            return bytes;
-        }
-
-        public static AsymmetricCipherKeyPair GenerateKeyPair()
-        {
-            // Generate a 2048-bit RSA key pair.
-            RsaKeyPairGenerator generator = new RsaKeyPairGenerator();
-            generator.Init(new RsaKeyGenerationParameters(
-                        new BigInteger("10001", 16), 
-                        new SecureRandom(), 
-                        2048,
-                        80));
-            return generator.GenerateKeyPair();
-        }
-    }
+    }    
 }
